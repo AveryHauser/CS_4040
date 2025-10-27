@@ -103,6 +103,13 @@ void ClearFile(char c){
         return;
     }
     file.close();
+
+    ofstream plot("graphs/plot.csv",ios::trunc);
+    if (!plot.is_open()) {
+        cerr << "Error: could not open " << "plot.csv" << endl;
+        return;
+    }
+    plot.close();
 }
 void PrintArray(int arr[], int n, char c) {
 
@@ -152,25 +159,34 @@ void TestSort(int arr[], int n, char choice) {
     delete[] arr_check;
     delete[] arr_sorted;
 
-    // Step 1: Time sorting
+    // Step 1: Choose sorting function
+    auto sortFunc = (choice == 'I') ? 
+        [](int* a, int n){ InsertionSort(a, n); } :
+        (choice == 'Q') ?
+        [](int* a, int n){ RandQuickSort(a, n, 0, n - 1); } :
+        [](int* a, int n){ CountingSort(a, n); };
+
+    // Step 2: Timing
     auto start = chrono::high_resolution_clock::now();
-    switch (choice) {
-        case 'I': InsertionSort(arr, n); break;
-        case 'Q': RandQuickSort(arr, n, 0, n - 1); break;
-        case 'C': CountingSort(arr, n); break;
-    }
+    sortFunc(arr, n);
     auto end = chrono::high_resolution_clock::now();
 
-    // Step 2: Save output
-    PrintArray(arr, n, choice);
-
-    // Step 3: Output timing
     auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     auto us = chrono::duration_cast<chrono::microseconds>(end - start).count();
 
+    ofstream file("graphs/plot.csv", ios::app);
+    if (!file.is_open()) {
+        cerr << "Error: could not open plot.csv" << endl;
+        return;
+    }
+
+    file << n << ',' << us << endl;
+    file.close();
+
+    // Step 3: Output
     string algo = (choice == 'I') ? "Insertion" :
                   (choice == 'Q') ? "Randomized Quick" : "Counting";
 
-    cout << algo << " Sort (n=" << n << "): "
+    cout << algo << " Sort Size(" << n << "): "
          << ms << " ms, " << us << " μs\n";
 }
