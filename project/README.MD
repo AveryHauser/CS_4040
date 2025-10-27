@@ -1,10 +1,38 @@
-This project takes different sized arrays and sorts the randomized elements. The two sorting algorithms being used is randomized quick sort and insertion sort. There is a main.cc which holds all of the code for the project and a pdf with documentation and infographics. 
+# Sorting Algorithm Analyzer
 
-To build this project run the following commands inside of the brackets.
-<g++ -Wall main.cc>
+This project analyzes the performance of two sorting algorithms: **Insertion Sort** and **Randomized Quicksort**. It runs these algorithms on arrays of various sizes filled with randomized elements and measures their execution time.
 
-To run the program run the follwing command inside of the brackets.
-<./a.out>
-You then chose with sorting algorithm you want to run, insertion sort or randomized quick sort. To run insertion sort enter I or i. To run randomized quick sort enter Q or q.
+The project includes:
 
-Currently it will print out all sorted elements from all sorted arrays. If you want ot test specific array sizes then you will have to comment out the other arrays that are getting tested. In both of the test function they have the following line of code <assert(std::equal(arr_copy_check, arr_copy_check + n, arr_sorted));>. this insures that the elements are getting sorrted corretly. 
+- `main.cc`: The primary C++ code for running the sorting algorithms.  
+- `sort.cc` & `sort.h`: Implementations of the sorting algorithms.  
+- `graphs/graph.py`: Optional Python script for visualizing performance.  
+- `output/` & `graphs/*.csv`: Folders for storing results.  
+- PDF documentation with infographics.
+
+> **Note:** When visualizing results, both axes in the graphs are logarithmically scaled. Keep this in mind when comparing the plotted results.
+
+---
+
+## 🛠️ How to Build, Run, and Visualize
+
+1. **Compile and run the project**
+
+```bash
+g++ -Wall main.cc sort.cc -o sorting_analyzer
+./sorting_analyzer
+```
+
+Once you run the last command it will ask you which of the sorting algorithms you want to test. Which ever algorithm you choose will print the output to the respective .txt in the `output` folder. 
+
+It will also report the size of the arrays tested the and time that it took to sort. It is recorded in microsends and stored in the respective .csv in the `graph` folder.
+
+## How to Create Graph
+
+To create the graph you need to get into the `graphs` folder. If you want to plot all of the sorting algorthims you will need to test all of the sorting algorithms. You need need to install the requirements which is listed in the requirements.txt. Then you need to use python to run the graph.py.
+
+```
+cd graphs
+pip install -r requirements.txt
+python graph.py
+```
