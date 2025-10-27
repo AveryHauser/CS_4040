@@ -5,6 +5,7 @@
 #include <chrono>
 #include <algorithm> 
 #include <cassert>
+#include <string> // Added for string manipulation
 
 using namespace std;
 
@@ -86,33 +87,46 @@ int Partition(int arr[], int n, int low, int high) {
     swap(arr[i + 1], arr[high]);
     return i + 1;
 }
+
+// --- MODIFIED FUNCTION ---
 void ClearFile(char c){
     string filename;
+    string plot_filename; // Added for plot file
+
     switch (toupper(c)) {
-        case 'I': filename = "output/insertionsort.txt"; break;
-        case 'Q': filename = "output/quicksort.txt"; break;
-        case 'C': filename = "output/countingsort.txt"; break;
+        case 'I': 
+            filename = "output/insertionsort.txt"; 
+            plot_filename = "graphs/insertion_plot.csv";
+            break;
+        case 'Q': 
+            filename = "output/quicksort.txt"; 
+            plot_filename = "graphs/quick_plot.csv";
+            break;
+        case 'C': 
+            filename = "output/countingsort.txt"; 
+            plot_filename = "graphs/counting_plot.csv";
+            break;
         default:
             cerr << "Invalid sort type. Nothing written.\n";
             return;
     }
 
-    ofstream file(filename,ios::trunc); // append instead of overwrite
+    // Clear output text file
+    ofstream file(filename, ios::trunc); 
     if (!file.is_open()) {
         cerr << "Error: could not open " << filename << endl;
-        return;
     }
     file.close();
 
-    ofstream plot("graphs/plot.csv",ios::trunc);
+    // Clear specific plot csv file
+    ofstream plot(plot_filename, ios::trunc);
     if (!plot.is_open()) {
-        cerr << "Error: could not open " << "plot.csv" << endl;
-        return;
+        cerr << "Error: could not open " << plot_filename << endl;
     }
     plot.close();
 }
-void PrintArray(int arr[], int n, char c) {
 
+void PrintArray(int arr[], int n, char c) {
     string filename;
     switch (toupper(c)) {
         case 'I': filename = "output/insertionsort.txt"; break;
@@ -123,7 +137,7 @@ void PrintArray(int arr[], int n, char c) {
             return;
     }
 
-    ofstream file(filename, ios::app); // append instead of overwrite
+    ofstream file(filename, ios::app); 
     if (!file.is_open()) {
         cerr << "Error: could not open " << filename << endl;
         return;
@@ -138,8 +152,11 @@ void PrintArray(int arr[], int n, char c) {
 void CountingSort(int arr[], int n) {
     // Placeholder for counting sort
     // (implementation can be added later)
+    // NOTE: Since this is empty, running 'c' will 
+    // produce a CSV with very small (near 0) times.
 }
 
+// --- MODIFIED FUNCTION ---
 void TestSort(int arr[], int n, char choice) {
     // Step 0: Verify correctness
     int* arr_check = new int[n];
@@ -174,19 +191,35 @@ void TestSort(int arr[], int n, char choice) {
     auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     auto us = chrono::duration_cast<chrono::microseconds>(end - start).count();
 
-    ofstream file("graphs/plot.csv", ios::app);
+    // Determine plot filename based on choice
+    string plot_filename;
+    string algo;
+    switch (choice) {
+        case 'I': 
+            plot_filename = "graphs/insertion_plot.csv"; 
+            algo = "Insertion";
+            break;
+        case 'Q': 
+            plot_filename = "graphs/quick_plot.csv"; 
+            algo = "Randomized Quick";
+            break;
+        case 'C': 
+            plot_filename = "graphs/counting_plot.csv"; 
+            algo = "Counting";
+            break;
+    }
+
+    // Write to the specific CSV
+    ofstream file(plot_filename, ios::app);
     if (!file.is_open()) {
-        cerr << "Error: could not open plot.csv" << endl;
+        cerr << "Error: could not open " << plot_filename << endl;
         return;
     }
 
-    file << n << ',' << us << endl;
+    file << n << ',' << us << endl; // Write size and time
     file.close();
 
-    // Step 3: Output
-    string algo = (choice == 'I') ? "Insertion" :
-                  (choice == 'Q') ? "Randomized Quick" : "Counting";
-
+    // Step 3: Output to console
     cout << algo << " Sort Size(" << n << "): "
          << ms << " ms, " << us << " μs\n";
 }
