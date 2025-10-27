@@ -19,13 +19,13 @@ The project includes:
 1. **Compile and run the project**
 
 ```bash
-g++ -Wall main.cc sort.cc -o sorting_analyzer
+g++ -Wall main.cc sort.cc 
 ./sorting_analyzer
 ```
 
 Once you run the last command it will ask you which of the sorting algorithms you want to test. Which ever algorithm you choose will print the output to the respective .txt in the `output` folder. 
 
-It will also report the size of the arrays tested the and time that it took to sort. It is recorded in microsends and stored in the respective .csv in the `graph` folder.
+It will also report the size of the arrays tested the and time that it took to sort. It is recorded in microseconds and stored in the respective .csv in the `graphs` folder.
 
 ## How to Create Graph
 

@@ -174,6 +174,7 @@ void TestSort(int arr[], int n, char choice) {
             break;
     }
 
+    PrintArray(arr, n, choice);
     // Step 3: Output to console
     cout << algo << " Sort Size(" << n << "): "
          << ms << " ms, " << us << " μs\n";
