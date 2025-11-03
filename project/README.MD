@@ -20,7 +20,7 @@ The project includes:
 
 ```bash
 g++ -Wall main.cc sort.cc 
-./sorting_analyzer
+./a.out
 ```
 
 Once you run the last command it will ask you which of the sorting algorithms you want to test. Which ever algorithm you choose will print the output to the respective .txt in the `output` folder. 
